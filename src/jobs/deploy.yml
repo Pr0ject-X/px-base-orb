@@ -1,0 +1,66 @@
+description: >
+  Deploy the Project-X artifact.
+
+executor:
+  name: php/default
+  tag: << parameters.php-version >>
+
+parameters:
+  app-root:
+    type: string
+    description: 'Set the application root path.'
+    default: '~/project'
+  php-version:
+    type: string
+    description: 'Set the PHP version to use.'
+    default: '7.3-node'
+  ssh-fingerprint:
+    type: string
+    description: 'Set the SSH key fingerprint.'
+    default: ''
+  git-email:
+    type: string
+    description: 'Set the Git user email to use for the commit.'
+    default: 'ci@no-reply.com'
+  git-username:
+    type: string
+    description: 'Set the Git user name to use for the commit.'
+    default: 'CI Bot'
+  after-deploy:
+    type: steps
+    description: 'Set the steps to execute after the deployment.'
+    default: []
+  before-deploy:
+    type: steps
+    description: 'Set the steps to execute before the deployment.'
+    default: []
+  command-args:
+    type: string
+    description: 'Set the project-x deploy command arguments.'
+    default: ''
+
+steps:
+  - checkout
+  - restore_cache:
+      name: Restore the composer vendor directory
+      keys:
+        - composer-deps-v1-{{ checksum "<< parameters.app-root >>/composer.lock" }}
+  - run:
+      name: Disable SSH strict host key checking
+      command: 'printf "\nHost *\n\tStrictHostKeyChecking no" >> ~/.ssh/config'
+  - run:
+      name: Set the Git configuration
+      command: |
+        git config --global user.email "<< parameters.git-email >>"
+        git config --global user.name "<< parameters.git-username >>"
+  - attach_workspace:
+      at: << parameters.app-root >>
+  - when:
+      condition: << parameters.before-deploy >>
+      steps: << parameters.before-deploy >>
+  - run:
+      name: Deploy PHP artifact
+      command: vendor/bin/px artifact:deploy --no-interaction << parameters.command-args >>
+  - when:
+      condition: << parameters.after-deploy >>
+      steps: << parameters.after-deploy >>

@@ -1,0 +1,11 @@
+version: 2.1
+
+description: >
+  A CircleCi orb to help with building and deploying artifacts using the
+  Project-X CLI utility.
+
+display:
+  source_url: "https://github.com/Pr0ject-X/px-orb"
+
+orbs:
+  php: circleci/php@1.0.2

@@ -1,0 +1,22 @@
+description: >
+  Install the PHP packages using composer.
+
+parameters:
+  before:
+    type: steps
+    default: []
+    description: 'Run steps before PHP installation.'
+  after:
+    type: steps
+    default: []
+    description: 'Run steps after PHP installation.'
+
+steps:
+  - when:
+      condition: << parameters.before >>
+      steps: << parameters.before >>
+  - php/install-composer
+  - php/install-packages
+  - when:
+      condition: << parameters.after >>
+      steps: << parameters.after >>

@@ -1,0 +1,41 @@
+description: >
+  Build the Project-X artifact.
+
+executor:
+  name: php/default
+  tag: << parameters.php-version >>
+
+parameters:
+  app-root:
+    type: string
+    description: 'Set the application root path.'
+    default: '~/project'
+  php-version:
+    type: string
+    description: 'Set the PHP version to use.'
+    default: '7.3-node'
+  php-before-install:
+    type: steps
+    description: 'Steps to executed before PHP packages are installed.'
+    default: []
+  php-after-install:
+    type: steps
+    description: 'Steps to executed after PHP packages are installed.'
+    default: []
+  command-args:
+    type: string
+    description: 'Set the project-x build command arguments.'
+    default: ''
+
+steps:
+  - checkout
+  - install-php-packages:
+      after: << parameters.php-after-install >>
+      before: << parameters.php-before-install >>
+  - run:
+      name: Build PHP artifact
+      command: vendor/bin/px artifact:build --no-interaction << parameters.command-args >>
+  - persist_to_workspace:
+      root: << parameters.app-root >>
+      paths:
+        - build

@@ -1,0 +1,26 @@
+description: >
+  Run Project-X build and deploy jobs.
+
+usage:
+  version: 2.1
+  orbs:
+    px: Pr0ject-X/px-orb@1.2.3
+  workflows:
+    use-my-orb:
+      jobs:
+        - px/build:
+            name: 'build'
+            php-version: '7.4-node'
+        - px/deploy:
+            name: 'deploy'
+            git-email: 'ci@example.com'
+            git-username: 'My CI Bot'
+            php-version: '7.4-node'
+            before-deploy:
+              - run:
+                  name: 'Run script before deployment'
+                  command: 'echo "Running before deployment"'
+            after-deploy:
+              - run:
+                  name: 'Run script after deployment'
+                  command: 'echo "Running after deployment"'
