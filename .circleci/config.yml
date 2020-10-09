@@ -84,9 +84,9 @@ workflows:
       - orb-tools/dev-promote-prod-from-commit-subject:
           orb-name: Pr0ject-X/px
           context: <publishing-context>
-          add-pr-comment: false
+          add-pr-comment: true
           fail-if-semver-not-indicated: true
-          publish-version-tag: false
+          publish-version-tag: true
           requires:
             - integration-test-1
           filters:
