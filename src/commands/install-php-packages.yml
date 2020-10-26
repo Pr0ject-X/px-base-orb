@@ -24,7 +24,7 @@ steps:
       steps:
         - run:
             name: Set Composer Version (<< parameters.composer-version >>)
-            command: composer self-update << parameters.composer-version >>
+            command: sudo composer self-update << parameters.composer-version >>
   - php/install-packages
   - when:
       condition: << parameters.after >>
