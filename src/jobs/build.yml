@@ -12,6 +12,10 @@ parameters:
     type: executor
     description: 'Set the PHP application executor.'
     default: php/default
+  composer-version:
+    type: string
+    default: ''
+    description: 'Set a particular composer version to use.'
   php-before-install:
     type: steps
     description: 'Steps to executed before PHP packages are installed.'
@@ -30,6 +34,7 @@ steps:
   - install-php-packages:
       after: << parameters.php-after-install >>
       before: << parameters.php-before-install >>
+      composer-version: << parameters.composer-version >>
   - run:
       name: Build PHP artifact
       command: vendor/bin/px artifact:build --no-interaction << parameters.command-args >>

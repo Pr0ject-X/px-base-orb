@@ -10,12 +10,21 @@ parameters:
     type: steps
     default: []
     description: 'Run steps after PHP installation.'
-
+  composer-version:
+    type: string
+    default: ''
+    description: 'Define a particular composer version to use.'
 steps:
   - when:
       condition: << parameters.before >>
       steps: << parameters.before >>
   - php/install-composer
+  - when:
+      condition: << parameters.composer-version >>
+      steps:
+        - run:
+            name: Set Composer Version (<< parameters.composer-version >>)
+            command: composer self-update << parameters.composer-version >>
   - php/install-packages
   - when:
       condition: << parameters.after >>
