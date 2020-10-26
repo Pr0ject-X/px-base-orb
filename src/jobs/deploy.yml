@@ -1,23 +1,17 @@
 description: >
   Deploy the Project-X artifact.
 
-executor:
-  name: php/default
-  tag: << parameters.php-version >>
+executor: << parameters.executor >>
 
 parameters:
   app-root:
     type: string
     description: 'Set the application root path.'
     default: '~/project'
-  php-version:
-    type: string
-    description: 'Set the PHP version to use.'
-    default: '7.3-node'
-  ssh-fingerprint:
-    type: string
-    description: 'Set the SSH key fingerprint.'
-    default: ''
+  executor:
+    type: executor
+    description: 'Set the PHP application executor.'
+    default: php/default
   git-email:
     type: string
     description: 'Set the Git user email to use for the commit.'

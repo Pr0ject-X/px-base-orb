@@ -1,19 +1,17 @@
 description: >
   Build the Project-X artifact.
 
-executor:
-  name: php/default
-  tag: << parameters.php-version >>
+executor: << parameters.executor >>
 
 parameters:
   app-root:
     type: string
     description: 'Set the application root path.'
     default: '~/project'
-  php-version:
-    type: string
-    description: 'Set the PHP version to use.'
-    default: '7.3-node'
+  executor:
+    type: executor
+    description: 'Set the PHP application executor.'
+    default: php/default
   php-before-install:
     type: steps
     description: 'Steps to executed before PHP packages are installed.'
