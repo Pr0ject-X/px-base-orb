@@ -1,0 +1,23 @@
+description: >
+  Setup git configuration.
+
+parameters:
+  git-email:
+    type: string
+    description: >
+      Set the git user email to use for the commit. Set the "$GIT_USER_EMAIL"
+      environment variable to use as the default.
+    default: $GIT_USER_EMAIL
+  git-username:
+    type: string
+    description: >
+      Set the git user name to use for the commit. Set the "$GIT_USER_NAME"
+      environment variable to use as the default.
+    default: $GIT_USER_NAME
+
+steps:
+  - run:
+      name: Set git configuration
+      command: |
+        git config --global user.email "<< parameters.git-email >>"
+        git config --global user.name "<< parameters.git-username >>"

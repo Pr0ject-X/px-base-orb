@@ -12,14 +12,6 @@ parameters:
     type: executor
     description: 'Set the PHP application executor.'
     default: php/default
-  git-email:
-    type: string
-    description: 'Set the Git user email to use for the commit.'
-    default: 'ci@no-reply.com'
-  git-username:
-    type: string
-    description: 'Set the Git user name to use for the commit.'
-    default: 'CI Bot'
   after-deploy:
     type: steps
     description: 'Set the steps to execute after the deployment.'
@@ -35,6 +27,7 @@ parameters:
 
 steps:
   - checkout
+  - setup-git-configuration
   - restore_cache:
       name: Restore the composer vendor directory
       keys:
@@ -42,11 +35,6 @@ steps:
   - run:
       name: Disable SSH strict host key checking
       command: 'printf "\nHost *\n\tStrictHostKeyChecking no" >> ~/.ssh/config'
-  - run:
-      name: Set the Git configuration
-      command: |
-        git config --global user.email "<< parameters.git-email >>"
-        git config --global user.name "<< parameters.git-username >>"
   - attach_workspace:
       at: << parameters.app-root >>
   - when:
