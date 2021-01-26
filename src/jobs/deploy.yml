@@ -28,10 +28,7 @@ parameters:
 steps:
   - checkout
   - setup-git-configuration
-  - restore_cache:
-      name: Restore the composer vendor directory
-      keys:
-        - composer-deps-v1-{{ checksum "<< parameters.app-root >>/composer.lock" }}
+  - php/install-packages
   - run:
       name: Disable SSH strict host key checking
       command: 'printf "\nHost *\n\tStrictHostKeyChecking no" >> ~/.ssh/config'
